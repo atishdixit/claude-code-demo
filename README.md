@@ -56,7 +56,8 @@ This starts **both** the Flask API (http://localhost:5000) and the React UI
 (http://localhost:5174) together in one terminal, labeled `[backend]` / `[frontend]`
 in the output. Stop both with `Ctrl+C`.
 
-Open **http://localhost:5174** to use the CRUD Tester UI.
+Open **http://localhost:5174** to use the CRUD Tester UI, or
+**http://localhost:5000/apidocs** for the interactive Swagger UI (see below).
 
 <details>
 <summary>Running them separately instead</summary>
@@ -90,6 +91,14 @@ npm run dev
 Errors are returned as JSON with an appropriate HTTP status, e.g. `404` for a missing
 item or `400` when `name` is omitted on create. `flask-cors` is enabled so the React
 dev server (a different origin) can call the API directly.
+
+### Swagger / OpenAPI docs
+
+With the backend running, open **http://localhost:5000/apidocs** for an interactive
+Swagger UI covering every endpoint — request/response schemas, example payloads, and
+a "Try it out" button to fire real requests from the browser. Powered by
+[flasgger](https://github.com/flasgger/flasgger); the raw OpenAPI spec is served at
+`/apispec_1.json`.
 
 ### Example usage (curl)
 
