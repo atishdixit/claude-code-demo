@@ -44,7 +44,7 @@ export default function Posts() {
     <div>
       <div className="toolbar">
         <div>
-          <h1 className="page-title">Your posts</h1>
+          <h1 className="page-title">Your posts1</h1>
           <p className="page-sub" style={{ marginBottom: 0 }}>
             Fetched from JSONPlaceholder, plus anything you've added locally.
           </p>

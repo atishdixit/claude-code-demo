@@ -27,7 +27,7 @@ export default function AddPost() {
 
   return (
     <div>
-      <h1 className="page-title">Add a new post</h1>
+      <h1 className="page-title">Add a new post11Sw3wwww</h1>
       <p className="page-sub">
         Submits to the JSONPlaceholder test API and saves the result locally so it shows up on the
         View Posts page.
