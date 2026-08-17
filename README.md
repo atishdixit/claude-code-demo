@@ -6,6 +6,9 @@ whenever the server restarts.
 
 Includes a React UI (in `frontend/`) for exercising the same CRUD actions from a browser.
 
+See [ARCHITECTURE.md](ARCHITECTURE.md) for a diagram of how the pieces fit together
+and a walkthrough of a request end-to-end.
+
 ## Project structure
 
 ```
@@ -14,10 +17,11 @@ python-web-demo/
 ├── app.py               # Flask API (backend)
 ├── requirements.txt
 ├── test-api.bat          # curl-based CRUD smoke test (Windows CMD)
-└── frontend/              # React + Vite UI that calls the API
+├── ARCHITECTURE.md        # architecture diagram + explanation
+└── frontend/               # React + Vite UI that calls the API
     └── src/
-        ├── api.js           # fetch helpers for the API
-        └── App.jsx            # create/list/edit/delete UI + request log
+        ├── api.js            # fetch helpers for the API
+        └── App.jsx             # create/list/edit/delete UI + request log
 ```
 
 ## Prerequisites
