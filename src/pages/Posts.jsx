@@ -1,6 +1,8 @@
-const { useState, useEffect } = React;
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { deletePost, getPosts, resetDemoData } from "../api.js";
 
-function PostsPage() {
+export default function Posts() {
   const [posts, setPosts] = useState(null); // null = loading
   const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
@@ -59,9 +61,9 @@ function PostsPage() {
       {posts !== null && posts.length === 0 && (
         <div className="empty-state">
           <p>No posts yet.</p>
-          <a className="btn btn-primary" href="index.html">
+          <Link className="btn btn-primary" to="/">
             Add your first post
-          </a>
+          </Link>
         </div>
       )}
 
@@ -72,7 +74,9 @@ function PostsPage() {
               <div className="post-main">
                 <p className="post-title">{post.title}</p>
                 <p className="post-body">{post.body}</p>
-                <p className="post-meta">Post #{post.id} &middot; User {post.userId}</p>
+                <p className="post-meta">
+                  Post #{post.id} &middot; User {post.userId}
+                </p>
               </div>
               <button
                 className="btn btn-danger"
@@ -88,6 +92,3 @@ function PostsPage() {
     </div>
   );
 }
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<PostsPage />);
