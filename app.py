@@ -6,8 +6,10 @@ Resource: "items" — each has id, name, description, price.
 from itertools import count
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # allow the React dev server (different origin) to call this API
 
 # In-memory storage. Reset whenever the process restarts.
 items = {}
