@@ -60,3 +60,12 @@ curl -X DELETE http://localhost:5000/items/1
 
 Errors are returned as JSON with an appropriate HTTP status, e.g. `404` for a missing
 item or `400` when `name` is omitted on create.
+
+## Quick test script (Windows)
+
+With the server running, `test-api.bat` exercises every endpoint (list, get, create,
+update, delete) using curl. Run it from Command Prompt:
+
+```bat
+test-api.bat
+```
