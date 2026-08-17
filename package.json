@@ -1,0 +1,13 @@
+{
+  "name": "python-web-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Flask CRUD API (in-memory storage) with a React UI for testing it.",
+  "scripts": {
+    "install:all": "py -m pip install -r requirements.txt && npm --prefix frontend install",
+    "dev": "concurrently -k -n backend,frontend -c blue,green \"py app.py\" \"npm --prefix frontend run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  }
+}

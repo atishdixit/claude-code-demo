@@ -10,19 +10,20 @@ Includes a React UI (in `frontend/`) for exercising the same CRUD actions from a
 
 ```
 python-web-demo/
-├── app.py             # Flask API (backend)
+├── package.json        # root scripts to install/run backend + frontend together
+├── app.py               # Flask API (backend)
 ├── requirements.txt
-├── test-api.bat        # curl-based CRUD smoke test (Windows CMD)
-└── frontend/            # React + Vite UI that calls the API
+├── test-api.bat          # curl-based CRUD smoke test (Windows CMD)
+└── frontend/              # React + Vite UI that calls the API
     └── src/
-        ├── api.js         # fetch helpers for the API
-        └── App.jsx          # create/list/edit/delete UI + request log
+        ├── api.js           # fetch helpers for the API
+        └── App.jsx            # create/list/edit/delete UI + request log
 ```
 
 ## Prerequisites
 
 - Python 3
-- Node.js (for the React frontend)
+- Node.js (for the React frontend and the root dev script)
 
   Verify with:
 
@@ -32,18 +33,50 @@ python-web-demo/
   npm -v
   ```
 
-## 1. Run the backend (API)
+## Setup
+
+From the `python-web-demo` folder, install both the Python and Node dependencies in
+one go:
 
 ```bash
 cd python-web-demo
-py -m pip install -r requirements.txt
+npm run install:all
+```
+
+(This runs `py -m pip install -r requirements.txt` and `npm install` inside
+`frontend/`. You can run those two commands separately if you prefer.)
+
+## Run it — one command
+
+```bash
+npm run dev
+```
+
+This starts **both** the Flask API (http://localhost:5000) and the React UI
+(http://localhost:5174) together in one terminal, labeled `[backend]` / `[frontend]`
+in the output. Stop both with `Ctrl+C`.
+
+Open **http://localhost:5174** to use the CRUD Tester UI.
+
+<details>
+<summary>Running them separately instead</summary>
+
+Backend, in one terminal:
+
+```bash
 py app.py
 ```
 
-The API starts at **http://localhost:5000**, seeded with 3 sample items. `flask-cors`
-is enabled so the React dev server (a different origin) can call it directly.
+Frontend, in a second terminal:
 
-### API endpoints
+```bash
+cd frontend
+npm run dev
+```
+
+</details>
+
+## API endpoints
 
 | Method | Path          | Description                                             |
 |--------|---------------|----------------------------------------------------------|
@@ -55,7 +88,8 @@ is enabled so the React dev server (a different origin) can call it directly.
 | DELETE | `/items/<id>` | Delete an item                                              |
 
 Errors are returned as JSON with an appropriate HTTP status, e.g. `404` for a missing
-item or `400` when `name` is omitted on create.
+item or `400` when `name` is omitted on create. `flask-cors` is enabled so the React
+dev server (a different origin) can call the API directly.
 
 ### Example usage (curl)
 
@@ -82,33 +116,14 @@ curl -X DELETE http://localhost:5000/items/1
 
 ### Quick test script (Windows)
 
-With the server running, `test-api.bat` exercises every endpoint (list, get, create,
+With the backend running, `test-api.bat` exercises every endpoint (list, get, create,
 update, delete) using curl. Run it from Command Prompt:
 
 ```bat
 test-api.bat
 ```
 
-## 2. Run the frontend (React UI)
-
-In a **second terminal**, with the backend still running:
-
-```bash
-cd python-web-demo/frontend
-npm install
-npm run dev
-```
-
-Open the URL Vite prints (default **http://localhost:5174** — the port is fixed in
-`vite.config.js` so it doesn't collide with other Vite projects). By default it talks
-to the API at `http://localhost:5000`; override with a `VITE_API_URL` env var if your
-backend runs elsewhere, e.g.:
-
-```bash
-VITE_API_URL=http://localhost:5000 npm run dev
-```
-
-### What the UI does
+## What the UI does
 
 - **Create item** — form at the top (`POST /items`)
 - **Items** — live list from `GET /items`, each with:
@@ -119,9 +134,12 @@ VITE_API_URL=http://localhost:5000 npm run dev
   result, timestamp), so you can see exactly what each action sent and whether it
   succeeded — useful for testing/demoing the API's behavior.
 
+By default the UI talks to `http://localhost:5000`; override with a `VITE_API_URL`
+env var if the backend runs elsewhere.
+
 ## Notes
 
 - Storage is in-memory on the Flask side — restarting `app.py` resets the data back
   to the 3 seeded items.
-- The frontend has no build step required for local testing — `npm run dev` is enough.
-  Use `npm run build` / `npm run preview` in `frontend/` for a production build.
+- The frontend has no build step required for local testing. Use `npm run build` /
+  `npm run preview` inside `frontend/` for a production build.
