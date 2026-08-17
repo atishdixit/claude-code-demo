@@ -1,4 +1,3 @@
-// Shared API + storage helpers used by both pages.
 // Public API: JSONPlaceholder (https://jsonplaceholder.typicode.com) — a free
 // fake REST API for testing. It accepts POST/DELETE requests and responds
 // realistically, but it does NOT persist changes on the server. To make this
@@ -24,7 +23,7 @@ async function fetchInitialPosts() {
 }
 
 // Returns the current post list, seeding it from the live API on first run.
-async function getPosts() {
+export async function getPosts() {
   let posts = loadPosts();
   if (!posts) {
     posts = await fetchInitialPosts();
@@ -33,7 +32,7 @@ async function getPosts() {
   return posts;
 }
 
-async function addPost({ title, body, userId }) {
+export async function addPost({ title, body, userId }) {
   const res = await fetch(API_BASE, {
     method: "POST",
     headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -52,7 +51,7 @@ async function addPost({ title, body, userId }) {
   return newPost;
 }
 
-async function deletePost(id) {
+export async function deletePost(id) {
   // Only hit the real API for ids that came from it (<= 100); locally
   // created posts use timestamp ids and only need to be removed locally.
   if (id <= 100) {
@@ -64,6 +63,6 @@ async function deletePost(id) {
   return updated;
 }
 
-function resetDemoData() {
+export function resetDemoData() {
   localStorage.removeItem(STORAGE_KEY);
 }

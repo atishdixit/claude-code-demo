@@ -1,6 +1,8 @@
-const { useState } = React;
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { addPost } from "../api.js";
 
-function AddPostPage() {
+export default function AddPost() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [userId, setUserId] = useState(1);
@@ -25,7 +27,7 @@ function AddPostPage() {
 
   return (
     <div>
-      <h1 className="page-title">Add a new post</h1>
+      <h1 className="page-title">Add a new post11Sw3wwww</h1>
       <p className="page-sub">
         Submits to the JSONPlaceholder test API and saves the result locally so it shows up on the
         View Posts page.
@@ -34,8 +36,7 @@ function AddPostPage() {
       <div className="card">
         {status.state === "success" && (
           <div className="alert alert-success">
-            {status.message}{" "}
-            <a href="posts.html">View it now &rarr;</a>
+            {status.message} <Link to="/posts">View it now &rarr;</Link>
           </div>
         )}
         {status.state === "error" && <div className="alert alert-error">{status.message}</div>}
@@ -81,11 +82,11 @@ function AddPostPage() {
       </div>
 
       <p className="footnote">
-        Data source: <a href="https://jsonplaceholder.typicode.com" target="_blank" rel="noreferrer">jsonplaceholder.typicode.com</a>
+        Data source:{" "}
+        <a href="https://jsonplaceholder.typicode.com" target="_blank" rel="noreferrer">
+          jsonplaceholder.typicode.com
+        </a>
       </p>
     </div>
   );
 }
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<AddPostPage />);
