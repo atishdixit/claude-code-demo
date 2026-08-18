@@ -1,0 +1,38 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: alert-service
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:alertdb}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:alert-processors}
+
+app:
+  kafka:
+    topic: ${APP_LOGS_TOPIC:app-logs}
+
+jwt:
+  public-key-path: ${JWT_PUBLIC_KEY_PATH:classpath:keys/public_key.pem}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

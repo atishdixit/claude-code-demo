@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:authdb}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+jwt:
+  private-key-path: ${JWT_PRIVATE_KEY_PATH:classpath:keys/private_key.pem}
+  expiration-seconds: ${JWT_EXPIRATION_SECONDS:3600}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

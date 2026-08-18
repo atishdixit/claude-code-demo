@@ -1,0 +1,25 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: log-ingestion-service
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+app:
+  kafka:
+    topic: ${APP_LOGS_TOPIC:app-logs}
+
+jwt:
+  public-key-path: ${JWT_PUBLIC_KEY_PATH:classpath:keys/public_key.pem}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
