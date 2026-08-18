@@ -1,0 +1,5 @@
+# STAGE profile — activated when SPRING_PROFILES_ACTIVE=stage
+logging:
+  level:
+    root: INFO
+    com.logmonitor: INFO

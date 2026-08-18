@@ -26,25 +26,76 @@ Plus supporting infrastructure: **MySQL** (one instance, 3 logical databases),
 - Docker + Docker Compose
 - (Only needed if building outside Docker) Java 21 and Maven
 
-## Run it
+## Environments
+
+Configuration for **DEV, TEST, STAGE, and PROD** is centralized in one place:
+[`env/`](env) — one file per environment (`dev.env`, `test.env`, `stage.env`,
+`prod.env`), each setting `SPRING_PROFILES_ACTIVE` plus the shared MySQL
+credentials and JWT token lifetime for that environment. Pass the right file to
+`docker compose --env-file`, and every one of the 4 services picks it up.
+
+`SPRING_PROFILES_ACTIVE` activates the matching `application-{profile}.yml` in
+**each** service (`auth-service`, `log-ingestion-service`,
+`log-processing-service`, `alert-service`) — that's what actually changes behavior
+per environment:
+
+| | DEV | TEST | STAGE | PROD |
+|---|---|---|---|---|
+| DB schema handling | `ddl-auto: update` | `ddl-auto: create-drop` (fresh every run) | `ddl-auto: validate` | `ddl-auto: validate` |
+| SQL logging | on | off | off | off |
+| Log level | DEBUG | INFO | INFO | WARN |
+| JWT token lifetime | 1h | 10m | 30m | 15m |
+| Swagger UI | enabled | enabled | enabled | **disabled** |
+
+`validate` (stage/prod) means the schema must already exist — those profiles never
+auto-create tables, matching how a real environment would be migration-managed
+rather than auto-updated. If you point stage/prod at a brand-new empty database,
+start it once with `dev` or `test` first so the schema exists, or apply your own
+migrations.
+
+### Run a specific environment
 
 ```bash
 cd log-monitor
-docker compose up --build -d
+
+# DEV (default if you don't pass --env-file at all)
+docker compose --env-file env/dev.env -p log-monitor-dev up --build -d
+# or just:
+run-dev.bat
+
+# TEST
+docker compose --env-file env/test.env -p log-monitor-test up --build -d
+run-test.bat
+
+# STAGE
+docker compose --env-file env/stage.env -p log-monitor-stage up --build -d
+run-stage.bat
+
+# PROD
+docker compose --env-file env/prod.env -p log-monitor-prod up --build -d
+run-prod.bat
 ```
+
+The `-p log-monitor-<env>` project name keeps each environment's containers,
+network, and volumes separate from the others. Note all environments use the same
+host ports (8080–8084, 3307, 9092), so only run **one environment at a time** on a
+single machine unless you also customize the port mappings.
 
 First build downloads Maven dependencies + base images, so it takes a few minutes.
-Check everything is healthy:
+Check everything is healthy (swap `-p` for whichever environment you started):
 
 ```bash
-docker compose ps
+docker compose -p log-monitor-dev ps
 ```
 
-Stop everything with:
+Stop an environment with:
 
 ```bash
-docker compose down
+docker compose -p log-monitor-dev down
 ```
+
+Plain `docker compose up --build -d` (no `--env-file`/`-p`) also still works — it
+falls back to `dev`-equivalent defaults baked into `docker-compose.yml`.
 
 ## Try it end-to-end
 
@@ -120,3 +171,6 @@ Then copy `private_key.pem` into `auth-service/src/main/resources/keys/` and
   instances per service.
 - `log-ingestion-service` is intentionally stateless (no database) — it only
   validates JWTs and forwards to Kafka.
+- `env/stage.env` and `env/prod.env` contain placeholder passwords checked into the
+  repo for demo convenience only — a real deployment must source secrets from a
+  secrets manager instead, never a committed file.

@@ -1,0 +1,12 @@
+# TEST profile — activated when SPRING_PROFILES_ACTIVE=test
+# ddl-auto=create-drop gives every test run a clean schema.
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+logging:
+  level:
+    root: INFO
+    com.logmonitor: INFO

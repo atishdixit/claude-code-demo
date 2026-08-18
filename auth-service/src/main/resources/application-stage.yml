@@ -1,0 +1,12 @@
+# STAGE profile — activated when SPRING_PROFILES_ACTIVE=stage
+# ddl-auto=validate: schema must already exist (mirrors how prod is run).
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+logging:
+  level:
+    root: INFO
+    com.logmonitor: INFO

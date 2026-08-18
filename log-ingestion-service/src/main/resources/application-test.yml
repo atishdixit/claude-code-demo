@@ -1,0 +1,5 @@
+# TEST profile — activated when SPRING_PROFILES_ACTIVE=test
+logging:
+  level:
+    root: INFO
+    com.logmonitor: INFO

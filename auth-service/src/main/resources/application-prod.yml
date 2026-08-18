@@ -1,0 +1,19 @@
+# PROD profile — activated when SPRING_PROFILES_ACTIVE=prod
+# ddl-auto=validate: schema must already exist — prod never auto-migrates.
+# Swagger/OpenAPI disabled: don't expose API docs publicly in production.
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    root: WARN
+    com.logmonitor: INFO

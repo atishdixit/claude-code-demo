@@ -3,14 +3,14 @@ services:
     image: mysql:8.4
     container_name: log-monitor-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_DATABASE: authdb
     ports:
       - "3307:3306"
     volumes:
       - ./mysql-init:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -71,12 +71,13 @@ services:
     ports:
       - "8081:8081"
     environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: authdb
-      DB_USER: root
-      DB_PASSWORD: root
-      JWT_EXPIRATION_SECONDS: 3600
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-root}
+      JWT_EXPIRATION_SECONDS: ${JWT_EXPIRATION_SECONDS:-3600}
 
   log-ingestion-service:
     build: ./log-ingestion-service
@@ -87,6 +88,7 @@ services:
     ports:
       - "8082:8082"
     environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       APP_LOGS_TOPIC: app-logs
 
@@ -101,11 +103,12 @@ services:
     ports:
       - "8083:8083"
     environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: processingdb
-      DB_USER: root
-      DB_PASSWORD: root
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-root}
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KAFKA_CONSUMER_GROUP: log-processors
       APP_LOGS_TOPIC: app-logs
@@ -121,11 +124,12 @@ services:
     ports:
       - "8084:8084"
     environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: alertdb
-      DB_USER: root
-      DB_PASSWORD: root
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-root}
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KAFKA_CONSUMER_GROUP: alert-processors
       APP_LOGS_TOPIC: app-logs

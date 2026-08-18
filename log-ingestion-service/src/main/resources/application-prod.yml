@@ -1,0 +1,12 @@
+# PROD profile — activated when SPRING_PROFILES_ACTIVE=prod
+# Swagger/OpenAPI disabled: don't expose API docs publicly in production.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    root: WARN
+    com.logmonitor: INFO

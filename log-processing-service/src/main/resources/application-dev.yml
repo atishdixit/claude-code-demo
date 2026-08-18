@@ -1,0 +1,11 @@
+# DEV profile — activated when SPRING_PROFILES_ACTIVE=dev
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    root: INFO
+    com.logmonitor: DEBUG
