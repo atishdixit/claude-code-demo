@@ -1,0 +1,24 @@
+{
+  "version": "2.0",
+  "routeKey": "POST /hello/echo",
+  "rawPath": "/hello/echo",
+  "rawQueryString": "",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "requestContext": {
+    "http": {
+      "method": "POST",
+      "path": "/hello/echo",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "127.0.0.1"
+    },
+    "requestId": "sample-request-id-2",
+    "routeKey": "POST /hello/echo",
+    "stage": "$default",
+    "time": "18/Aug/2026:00:00:00 +0000",
+    "timeEpoch": 1755475200000
+  },
+  "body": "{\"text\":\"hello from api gateway\"}",
+  "isBase64Encoded": false
+}

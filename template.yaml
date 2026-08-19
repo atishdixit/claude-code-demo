@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  quarkus-lambda-demo — a Quarkus REST API deployed as a single AWS Lambda
+  function behind a Function URL (no API Gateway needed for this demo).
+
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 256
+
+Resources:
+  QuarkusLambdaDemoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: quarkus-lambda-demo
+      # Built by `mvn package` (JVM) — see README for the native-image variant,
+      # which trades a longer build for a much faster cold start.
+      Handler: not.used.for.quarkus.lambda-http
+      Runtime: java21
+      CodeUri: target/function.zip
+      FunctionUrlConfig:
+        AuthType: NONE
+
+Outputs:
+  FunctionUrl:
+    Description: Public URL for the Lambda function
+    Value: !GetAtt QuarkusLambdaDemoFunctionUrl.FunctionUrl

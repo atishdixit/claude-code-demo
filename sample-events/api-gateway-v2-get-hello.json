@@ -1,0 +1,23 @@
+{
+  "version": "2.0",
+  "routeKey": "GET /hello",
+  "rawPath": "/hello",
+  "rawQueryString": "",
+  "headers": {
+    "accept": "application/json"
+  },
+  "requestContext": {
+    "http": {
+      "method": "GET",
+      "path": "/hello",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "127.0.0.1"
+    },
+    "requestId": "sample-request-id",
+    "routeKey": "GET /hello",
+    "stage": "$default",
+    "time": "18/Aug/2026:00:00:00 +0000",
+    "timeEpoch": 1755475200000
+  },
+  "isBase64Encoded": false
+}
