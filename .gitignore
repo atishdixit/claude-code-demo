@@ -1,0 +1,12 @@
+target/
+*.class
+dependency-reduced-pom.xml
+
+# Generated at runtime -- keep the folders (.gitkeep) but not their contents.
+output/*.pdf
+logs/*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
