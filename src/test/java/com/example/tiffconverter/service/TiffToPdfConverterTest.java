@@ -46,6 +46,18 @@ class TiffToPdfConverterTest {
     }
 
     @Test
+    void convertsMockPatentReportPreservingAllFourPages(@TempDir Path tempDir) throws Exception {
+        Path tiff = tempDir.resolve("patent.tiff");
+        TiffFixtureGenerator.generatePatentReport(tiff);
+        Path pdf = tempDir.resolve("patent.pdf");
+
+        int pages = converter.convert(tiff, pdf);
+
+        assertEquals(4, pages, "title page + abstract + claims + description");
+        assertEquals(4, countPdfPages(pdf));
+    }
+
+    @Test
     void corruptFileThrowsAndLeavesNoPartialOutput(@TempDir Path tempDir) throws Exception {
         Path fakeTiff = tempDir.resolve("corrupt.tiff");
         TiffFixtureGenerator.generateCorrupt(fakeTiff);

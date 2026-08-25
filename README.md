@@ -16,7 +16,7 @@ run.bat
 ```
 
 That's it — `run.bat` runs the jar against whatever is in `input/` right now. The
-repo ships with 4 sample files in `input/` already (see [Test files](#test-files)
+repo ships with 5 sample files in `input/` already (see [Test files](#test-files)
 below), so this works immediately after a clone with no setup beyond having a JDK
 and Maven installed.
 
@@ -52,18 +52,19 @@ project root first, so this "just works" regardless of where you launch it from.
 
 ## Test files
 
-`input/` ships with 4 checked-in sample files so the behavior above is visible on
+`input/` ships with 5 checked-in sample files so the behavior above is visible on
 first run without you needing to supply anything:
 
 | File | Purpose |
 |---|---|
 | `sample-single-page.tiff` | normal case: 1-page TIFF → 1-page PDF |
 | `sample-multi-page.tiff` | 3-page TIFF → 3-page PDF |
-| `sample-corrupt.tiff` | not a real TIFF (plain text with a `.tiff` extension) — demonstrates a single bad file being logged to `error.log` and skipped, without affecting the other two |
+| `sample-patent-report.tiff` | a more realistic 4-page mock document (grayscale, Deflate-compressed — like a real scanned document): title/bibliographic page, abstract, claims, description, all placeholder content → 4-page PDF |
+| `sample-corrupt.tiff` | not a real TIFF (plain text with a `.tiff` extension) — demonstrates a single bad file being logged to `error.log` and skipped, without affecting the others |
 | `sample-not-a-tiff.txt` | wrong extension entirely — demonstrates it's ignored, not counted, not attempted |
 
 Running `run.bat` against these as-is produces exit code `1` (because of the
-deliberately-corrupt file) with 2 PDFs in `output/` and one error entry in
+deliberately-corrupt file) with 3 PDFs in `output/` and one error entry in
 `logs/error.log` — this is the expected, correct result, not a bug.
 
 These same files are also generated programmatically by
@@ -77,13 +78,13 @@ copies and the test fixtures are guaranteed to describe the same scenarios.
 mvn test
 ```
 
-12 JUnit 5 tests across 3 classes, all using real generated TIFF files (via
+13 JUnit 5 tests across 3 classes, all using real generated TIFF files (via
 `TiffFixtureGenerator`, backed by the TwelveMonkeys ImageIO TIFF plugin — test
 scope only, not a runtime dependency):
 
 - `TiffToPdfConverterTest` — single-page conversion, multi-page page-count
-  preservation, corrupt file throws + leaves no partial output, missing file
-  throws, empty file throws.
+  preservation, the mock 4-page patent report, corrupt file throws + leaves no
+  partial output, missing file throws, empty file throws.
 - `FileScannerTest` — finds `.tif`/`.tiff` case-insensitively, ignores other
   extensions, ignores empty directories, ignores directories named like a TIFF.
 - `BatchConverterTest` — mixed valid/corrupt/ignored files in one batch (asserts

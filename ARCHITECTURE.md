@@ -96,7 +96,9 @@ sequenceDiagram
 ## Test fixtures are real files, not mocks
 
 `TiffFixtureGenerator` (test scope) uses the TwelveMonkeys ImageIO TIFF plugin to
-render actual valid single- and multi-page TIFFs, plus a deliberately-corrupt file.
+render actual valid single- and multi-page TIFFs, a more realistic grayscale
+Deflate-compressed 4-page mock patent report (title page, abstract, claims,
+description), and a deliberately-corrupt file.
 Tests exercise the real `TiffToPdfConverter`/iText code path end-to-end — reading
 real TIFF bytes, writing a real PDF, then reading that PDF back with iText to
 assert its page count — rather than mocking the conversion logic itself. The same

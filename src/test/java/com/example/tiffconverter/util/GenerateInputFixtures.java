@@ -22,6 +22,9 @@ public final class GenerateInputFixtures {
         TiffFixtureGenerator.generateMultiPage(
                 input.resolve("sample-multi-page.tiff"), 3, 400, 250);
 
+        TiffFixtureGenerator.generatePatentReport(
+                input.resolve("sample-patent-report.tiff"));
+
         TiffFixtureGenerator.generateCorrupt(
                 input.resolve("sample-corrupt.tiff"));
 
